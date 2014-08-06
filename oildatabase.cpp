@@ -16,7 +16,6 @@ OilDatabase::OilDatabase(const QString &file)
     }
 
     while(query.next()) {
-        qDebug() << query.value(0).toString();
         oils.insert(query.value(0).toString(),
                     Oil(query.value(0).toString(),
                         query.value(1).toDouble(),
