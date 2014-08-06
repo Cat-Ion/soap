@@ -72,12 +72,7 @@ void MainWindow::sort_oils_by(const QString &key, bool ascending) {
             return ((a.*get_key)() < (b.*get_key)()) == ascending; });
     }
 
-
-
-    for(QList<Oil>::iterator it = oil_list.begin();
-        it != oil_list.end();
-        it++) {
-        ui->oil_list->addItem(it->get_name());
+    for(auto &oil : oil_list) {
+        ui->oil_list->addItem(oil.get_name());
     }
-
 }
