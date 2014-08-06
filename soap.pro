@@ -4,17 +4,31 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG += c++11
 
 TARGET = soap
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    oilwidget.cpp \
+    oildatabase.cpp \
+    oil.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    oilwidget.h \
+    oildatabase.h \
+    oil.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    oilwidget.ui
+
+TRANSLATIONS = soap_de.ts
+
+OTHER_FILES += \
+    soap_de.ts
