@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QTranslator>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -15,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     oils("oils.sqlite")
 {
     ui->setupUi(this);
-    ui->retranslateUi(this);
 
     ui->sort_by_property->addItems(Oil::keys);
 

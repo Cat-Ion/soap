@@ -34,7 +34,7 @@ private:
 
     Ui::MainWindow *ui;
     OilDatabase oils;
-    QHash<QString,QList<QLineEdit*>> oil_key_fields;
+    QHash<QString,QList<QLineEdit*> > oil_key_fields;
 
     void calculate_lye();
 };
