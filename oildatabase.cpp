@@ -1,3 +1,4 @@
+#include <QObject>
 #include <QVariant>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -44,4 +45,31 @@ Oil OilDatabase::get_oil(const QString &name) {
 
 QList<Oil> OilDatabase::get_oils() {
     return oils.values();
+}
+
+QList<Oil> OilDatabase::get_sorted_oils(const QString &key, bool ascending) {
+    QList<Oil> oils = get_oils();
+
+    if(key == QObject::tr("Name")) {
+        std::sort(oils.begin(),
+                  oils.end(),
+                  [ascending](const Oil &a, const Oil &b) {
+            return (a.get_name() < b.get_name()) == ascending;
+        });
+    } else {
+        Oil::Getter get_key = Oil::get_getter(key);
+
+        std::sort(oils.begin(),
+                  oils.end(),
+                  [get_key, ascending](const Oil &a, const Oil &b) {
+            auto ak = (a.*get_key)(),
+                 bk = (b.*get_key)();
+            if(ak == bk) {
+                return false;
+            } else {
+                return (ak < bk) == ascending;
+            }
+        });
+    }
+    return oils;
 }

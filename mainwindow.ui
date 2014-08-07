@@ -910,34 +910,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>weight_grams</sender>
-   <signal>valueChanged(double)</signal>
+   <sender>sort_order_incdec_button</sender>
+   <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>new_weight_grams(double)</slot>
+   <slot>toggle_sort_order()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>115</x>
-     <y>99</y>
+     <x>104</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
-     <x>735</x>
-     <y>75</y>
+     <x>395</x>
+     <y>311</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>MainWindow</sender>
-   <signal>set_weight_grams(double)</signal>
-   <receiver>weight_grams</receiver>
-   <slot>setValue(double)</slot>
+   <sender>sort_by_property</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>sort_oils_by(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>0</x>
-     <y>392</y>
+     <x>178</x>
+     <y>141</y>
     </hint>
     <hint type="destinationlabel">
-     <x>115</x>
-     <y>99</y>
+     <x>-28</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -946,11 +946,7 @@
   <signal>set_weight_grams(double)</signal>
   <signal>set_weight_pounds(double)</signal>
   <signal>set_weight_ounces(double)</signal>
-  <slot>new_weight_grams(double)</slot>
-  <slot>new_weight_pounds(double)</slot>
-  <slot>new_weight_ounces(double)</slot>
-  <slot>set_lye_type_naoh()</slot>
-  <slot>set_lye_type_koh()</slot>
-  <slot>set_lye_type_koh_90()</slot>
+  <slot>toggle_sort_order()</slot>
+  <slot>sort_oils_by(QString)</slot>
  </slots>
 </ui>

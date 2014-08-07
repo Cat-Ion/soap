@@ -6,6 +6,7 @@
 class Oil
 {
 public:
+    static const QList<QString> keys;
     typedef double (Oil::*Getter)()const;
 
     Oil(QString name,
@@ -47,12 +48,14 @@ public:
     static Getter get_getter(const QString &k);
 
 private:
+    static const QHash<QString, Getter> name_to_getter;
+    static void init_statics();
+
     QString name;
     double hardness, cleansing, condition, bubbly, creamy, iodine, ins;
     double lauric, myristic, palmitic, stearic, ricinoleic, oleic, linoleic, linolenic;
 
     double get_zero() const;
-    static QHash<QString, Getter> name_to_getter;
 };
 
 #endif // OIL_H
