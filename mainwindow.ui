@@ -180,7 +180,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>decreasing</string>
+                 <string>increasing</string>
                 </property>
                </widget>
               </item>
