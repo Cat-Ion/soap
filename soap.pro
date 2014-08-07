@@ -8,7 +8,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall
 
 TARGET = soap
 TEMPLATE = app
