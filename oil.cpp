@@ -34,6 +34,38 @@ QList<QString> init_keys() {
 
 const QList<QString> Oil::keys = init_keys();
 
+QList<QString> init_fatty_acids() {
+    QList<QString> l;
+    l.append(QObject::tr("Lauric"));
+    l.append(QObject::tr("Myristic"));
+    l.append(QObject::tr("Palmitic"));
+    l.append(QObject::tr("Stearic"));
+    l.append(QObject::tr("Ricinoleic"));
+    l.append(QObject::tr("Oleic"));
+    l.append(QObject::tr("Linoleic"));
+    l.append(QObject::tr("Linolenic"));
+    return l;
+}
+
+QList<QString> init_qualities() {
+    QList<QString> l;
+    l.append(QObject::tr("Hardness"));
+    l.append(QObject::tr("Cleansing"));
+    l.append(QObject::tr("Condition"));
+    l.append(QObject::tr("Bubbly"));
+    l.append(QObject::tr("Creamy"));
+    l.append(QObject::tr("Iodine"));
+    l.append(QObject::tr("INS"));
+
+    return l;
+}
+
+const QList<QString> Oil::fatty_acids = init_fatty_acids();
+
+const QList<QString> Oil::qualities = init_qualities();
+
+
+
 Oil::Oil(QString name,
          double hardness,
          double cleansing,

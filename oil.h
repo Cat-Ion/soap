@@ -6,7 +6,7 @@
 class Oil
 {
 public:
-    static const QList<QString> keys;
+    static const QList<QString> keys, fatty_acids, qualities;
     typedef double (Oil::*Getter)()const;
 
     Oil(QString name,

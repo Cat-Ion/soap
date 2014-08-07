@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QList>
+#include <QLineEdit>
 #include "oildatabase.h"
 
 namespace Ui {
@@ -17,6 +20,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void show_current_oil_properties(const QString &oil);
     void toggle_sort_order();
     void sort_oils_by(const QString &key);
 
@@ -30,6 +34,7 @@ private:
 
     Ui::MainWindow *ui;
     OilDatabase oils;
+    QHash<QString,QList<QLineEdit*>> oil_key_fields;
 
     void calculate_lye();
 };
