@@ -5,7 +5,10 @@
 #include <QString>
 #include <QList>
 #include <QLineEdit>
+#include <QListWidgetItem>
+#include <QModelIndex>
 #include "oildatabase.h"
+#include "soapmixer.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,23 +23,26 @@ public:
     ~MainWindow();
 
 public slots:
+    void refresh_soap();
     void show_current_oil_properties(const QString &oil);
-    void toggle_sort_order();
     void sort_oils_by(const QString &key);
+    void toggle_sort_order();
+
+private slots:
+    void add_list_item_to_soap(QListWidgetItem *);
 
 signals:
 
 
 private:
     enum WeightUnit { Grams, Pounds, Ounces } weight_unit;
-    enum LyeType { NaOH, KOH, KOH_90 } lye_type;
     bool sort_increasing;
 
     Ui::MainWindow *ui;
     OilDatabase oils;
     QHash<QString,QList<QLineEdit*> > oil_key_fields;
+    SoapMixer soap;
 
-    void calculate_lye();
 };
 
 #endif // MAINWINDOW_H

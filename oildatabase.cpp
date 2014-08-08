@@ -50,8 +50,6 @@ QList<Oil> OilDatabase::get_oils() {
 QList<Oil> OilDatabase::get_sorted_oils(const QString &key, bool ascending) {
     QList<Oil> oils = get_oils();
 
-    for(auto it : oils) qDebug() << it.get_name();
-
     if(key == QObject::tr("Name")) {
         std::sort(oils.begin(),
                   oils.end(),

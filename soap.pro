@@ -18,12 +18,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     oilwidget.cpp \
     oildatabase.cpp \
-    oil.cpp
+    oil.cpp \
+    soapmixer.cpp \
+    soapingredient.cpp
 
 HEADERS  += mainwindow.h \
     oilwidget.h \
     oildatabase.h \
-    oil.h
+    oil.h \
+    soapmixer.h \
+    soapingredient.h
 
 FORMS    += mainwindow.ui \
     oilwidget.ui

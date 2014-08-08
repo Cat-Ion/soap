@@ -2,10 +2,9 @@
 #include "ui_oilwidget.h"
 
 OilWidget::OilWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::OilWidget)
+    QAbstractItemDelegate(parent),
+    ui(new Ui::OilWidget())
 {
-    ui->setupUi(this);
 }
 
 OilWidget::~OilWidget()
