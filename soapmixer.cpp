@@ -72,15 +72,10 @@ bool SoapMixer::setData(const QModelIndex &index, const QVariant &value, int rol
         switch(index.column()) {
         case Weight:
             set_oil_weight(index.row(), value.toDouble());
-            emit dataChanged(this->index(0, ColumnType::Mass),
-                             this->index(oils.size()-1, ColumnType::Mass));
-            emit dataChanged(index, index);
             break;
 
         case Mass:
             set_oil_mass(index.row(), value.toDouble());
-            emit dataChanged(this->index(index.row(), ColumnType::Weight),
-                             this->index(index.row(), ColumnType::Mass));
             break;
 
         default:
@@ -95,6 +90,10 @@ bool SoapMixer::setData(const QModelIndex &index, const QVariant &value, int rol
 
 SoapMixer::LyeType SoapMixer::get_lye_type() const {
     return lye_type;
+}
+
+QList<const SoapIngredient> *SoapMixer::get_oils() const {
+    return reinterpret_cast<QList<const SoapIngredient> *> (const_cast<QList<SoapIngredient> *>(&oils));
 }
 
 void SoapMixer::add_oil(const QString &oil) {
@@ -141,22 +140,26 @@ void SoapMixer::set_oil_mass(int index, double new_mass) {
     if(oils.size() != 1) {
         mass -= oils[index].get_mass();
         weight_sum -= oils[index].get_weight();
-    }
 
-    oils[index].set_mass(new_mass);
-
-    if(oils.size() != 1) {
+        oils[index].set_mass(new_mass);
         oils[index].set_weight(new_mass/mass * weight_sum);
 
-        mass += new_mass;
         weight_sum += new_mass/mass * weight_sum;
+        mass += new_mass;
     } else {
+        oils[index].set_mass(new_mass);
         oils[index].set_weight(1);
 
         mass = new_mass;
     }
 
+
     recalculate_weight_sum();
+    this->blockSignals(true);
+    emit mass_changed(new_mass);
+    this->blockSignals(false);
+    emit dataChanged(this->index(index, ColumnType::Weight),
+                     this->index(index, ColumnType::Mass));
 }
 
 void SoapMixer::set_oil_mass(const QString &oil, double new_mass) {
@@ -182,6 +185,10 @@ void SoapMixer::set_oil_weight(int index, double new_weight) {
     oils[index].set_weight(new_weight);
     recalculate_weight_sum();
     recalculate_masses();
+    emit dataChanged(this->index(0, ColumnType::Mass),
+                     this->index(oils.size()-1, ColumnType::Mass));
+    emit dataChanged(this->index(index, ColumnType::Weight),
+                     this->index(index, ColumnType::Weight));
 }
 
 void SoapMixer::set_oil_weight(const QString &oil, double new_weight) {
@@ -197,6 +204,8 @@ double SoapMixer::get_total_mass() const {
 
 void SoapMixer::set_total_mass(double new_mass) {
     mass = new_mass;
+    recalculate_masses();
+    emit mass_changed(new_mass);
 }
 
 void SoapMixer::recalculate_indices() {
@@ -210,12 +219,14 @@ void SoapMixer::recalculate_masses() {
     for(SoapIngredient &oil : oils) {
         oil.set_mass(oil.get_weight() * mass / weight_sum);
     }
+    emit dataChanged(this->index(0, ColumnType::Mass),
+                     this->index(oils.size()-1, ColumnType::Mass));
 }
 
 void SoapMixer::recalculate_weight_sum() {
     weight_sum = std::accumulate(oils.constBegin(),
                                  oils.constEnd(),
-                                 0,
+                                 0.0,
                                  [](const double &a, const SoapIngredient &b) {
                                      return a + b.get_weight();
                                  });

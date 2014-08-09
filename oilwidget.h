@@ -15,6 +15,7 @@ class OilWidget : public QAbstractItemDelegate
 public:
     OilWidget(QWidget *parent = 0);
     ~OilWidget();
+    /*
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
@@ -24,7 +25,8 @@ public:
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    void sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    */
 
 private:
     Ui::OilWidget *ui;

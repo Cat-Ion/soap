@@ -25,6 +25,7 @@ public:
 public slots:
     void refresh_soap();
     void show_current_oil_properties(const QString &oil);
+    void show_current_oil_properties_from_ingredients(QModelIndex);
     void sort_oils_by(const QString &key);
     void toggle_sort_order();
 

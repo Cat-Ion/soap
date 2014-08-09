@@ -23,6 +23,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     LyeType get_lye_type() const;
+    QList<const SoapIngredient> *get_oils() const;
     double get_oil_mass(int index) const;
     double get_oil_mass(const QString &oil) const;
     double get_oil_weight(int index) const;
@@ -39,6 +40,9 @@ public slots:
     void add_oil(const QString &oil);
     void remove_oil(const QString &oil);
     void set_total_mass(double new_mass);
+
+signals:
+    void mass_changed(double);
 
 private:
     enum ColumnType {

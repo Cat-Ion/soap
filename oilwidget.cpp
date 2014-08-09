@@ -11,3 +11,4 @@ OilWidget::~OilWidget()
 {
     delete ui;
 }
+

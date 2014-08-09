@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "soapproperties.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -15,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->sort_by_property->addItems(Oil::keys);
+
+    ui->ingredient_table->setSelectionMode(QListView::SingleSelection);
 
     for(auto quality : Oil::qualities) {
         int index = Oil::qualities.indexOf(quality);
@@ -61,6 +64,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->oil_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(add_list_item_to_soap(QListWidgetItem*)));
+
+    connect(ui->weight_grams, SIGNAL(valueChanged(double)),
+            &soap, SLOT(set_total_mass(double)));
+
+    connect(&soap, SIGNAL(mass_changed(double)),
+            ui->weight_grams, SLOT(setValue(double)));
+    connect(&soap, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+            this, SLOT(refresh_soap()));
+
+    connect(ui->ingredient_table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            this, SLOT(show_current_oil_properties_from_ingredients(QModelIndex)));
 
 }
 
@@ -117,10 +131,17 @@ void MainWindow::show_current_oil_properties(const QString &oil_name) {
     }
 }
 
+void MainWindow::show_current_oil_properties_from_ingredients(QModelIndex index) {
+    show_current_oil_properties(soap.get_oils()->at(index.row()).get_name());
+}
+
 void MainWindow::add_list_item_to_soap(QListWidgetItem *i) {
     soap.add_oil(i->text());
 }
 
 void MainWindow::refresh_soap() {
-
+    QHash<QString,double> properties = SoapProperties::calculate(oils, soap.get_oils());
+    for(auto key : properties.keys()) {
+        oil_key_fields[key][1]->setText(QString::number(properties[key], 'g', 3));
+    }
 }

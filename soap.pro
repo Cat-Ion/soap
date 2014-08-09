@@ -20,19 +20,18 @@ SOURCES += main.cpp\
     oildatabase.cpp \
     oil.cpp \
     soapmixer.cpp \
-    soapingredient.cpp
+    soapingredient.cpp \
+    soapproperties.cpp
 
 HEADERS  += mainwindow.h \
     oilwidget.h \
     oildatabase.h \
     oil.h \
     soapmixer.h \
-    soapingredient.h
+    soapingredient.h \
+    soapproperties.h
 
 FORMS    += mainwindow.ui \
     oilwidget.ui
 
-TRANSLATIONS = soap_de.ts
-
-OTHER_FILES += \
-    soap_de.ts
+OTHER_FILES +=
