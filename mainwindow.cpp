@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QDebug>
+#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -63,9 +64,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ingredient_table->setModel(&soap);
     ui->ingredient_table->setFixedWidth(400);
     ui->ingredient_table->verticalHeader()->hide();
-    ui->ingredient_table->setColumnWidth(0, 295);
-    ui->ingredient_table->setColumnWidth(1, 50);
-    ui->ingredient_table->setColumnWidth(2, 50);
+    ui->ingredient_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->ingredient_table->setColumnWidth(0, 280);
+    ui->ingredient_table->setColumnWidth(1, 60);
+    ui->ingredient_table->setColumnWidth(2, 60);
+    ui->ingredient_table->installEventFilter(this);
 
     connect(ui->oil_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(add_list_item_to_soap(QListWidgetItem*)));
@@ -80,8 +83,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->ingredient_table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(show_current_oil_properties_from_ingredients(QModelIndex)));
-    connect(ui->ingredient_table, SIGNAL(doubleClicked(QModelIndex)),
-            &soap, SLOT(remove_oil(QModelIndex)));
 
 }
 
@@ -155,4 +156,17 @@ void MainWindow::refresh_soap() {
     for(auto key : properties.keys()) {
         oil_key_fields[key][1]->setText(QString::number(properties[key], 'g', 3));
     }
+}
+
+bool MainWindow::eventFilter(QObject *o, QEvent *e) {
+    if(o == ui->ingredient_table && e->type() == QEvent::KeyPress) {
+        QKeyEvent *k = static_cast<QKeyEvent*> (e);
+        if(k->key() == Qt::Key_Delete) {
+            if(ui->ingredient_table->selectionModel()->selection().indexes().size() > 0) {
+                soap.remove_oil(ui->ingredient_table->selectionModel()->selection().indexes()[0]);
+                return true;
+            }
+        }
+    }
+    return QObject::eventFilter(o, e);
 }

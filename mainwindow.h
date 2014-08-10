@@ -44,6 +44,8 @@ private:
     QHash<QString,QList<QLineEdit*> > oil_key_fields;
     SoapMixer soap;
 
+    bool eventFilter(QObject *, QEvent *);
+
 };
 
 #endif // MAINWINDOW_H
