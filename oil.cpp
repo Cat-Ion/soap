@@ -10,7 +10,7 @@ QHash<QString,Oil::Getter> init_ntg() {
     ntg.insert(QObject::tr("Bubbly"), &Oil::get_bubbly);
     ntg.insert(QObject::tr("Creamy"), &Oil::get_creamy);
     ntg.insert(QObject::tr("Iodine"), &Oil::get_iodine);
-    ntg.insert(QObject::tr("SAP"), &Oil::get_sap);
+    ntg.insert(QObject::tr("Sap"), &Oil::get_sap);
     ntg.insert(QObject::tr("INS"), &Oil::get_ins);
     ntg.insert(QObject::tr("Lauric"), &Oil::get_lauric);
     ntg.insert(QObject::tr("Myristic"), &Oil::get_myristic);
@@ -56,7 +56,7 @@ QList<QString> init_qualities() {
     l.append(QObject::tr("Bubbly"));
     l.append(QObject::tr("Creamy"));
     l.append(QObject::tr("Iodine"));
-    l.append(QObject::tr("SAP"));
+    l.append(QObject::tr("Sap"));
     l.append(QObject::tr("INS"));
 
     return l;
