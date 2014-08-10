@@ -61,6 +61,11 @@ MainWindow::MainWindow(QWidget *parent) :
     sort_oils_by(tr("Name"));
 
     ui->ingredient_table->setModel(&soap);
+    ui->ingredient_table->setFixedWidth(400);
+    ui->ingredient_table->verticalHeader()->hide();
+    ui->ingredient_table->setColumnWidth(0, 295);
+    ui->ingredient_table->setColumnWidth(1, 50);
+    ui->ingredient_table->setColumnWidth(2, 50);
 
     connect(ui->oil_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(add_list_item_to_soap(QListWidgetItem*)));
