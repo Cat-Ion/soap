@@ -4,33 +4,24 @@
 QHash<QString,double> SoapProperties::calculate(OilDatabase &db, QList<const SoapIngredient> *ingredients) {
     QHash<QString,double> retval;
 
-    double total_weight = 0;
-
     for(QString key : Oil::keys) {
         if(key == QObject::tr("Name")) {
             continue;
         }
 
-        retval[key] = 0;
-    }
-
-    for(auto it = ingredients->constBegin(); it < ingredients->constEnd(); it++) {
-        Oil oil = db.get_oil(it->get_name());
-        double weight = it->get_weight();
-        total_weight += it->get_weight();
-
-        for(QString key : Oil::keys) {
-            if(key == QObject::tr("Name")) {
-                continue;
-            }
-
-            retval[key] += weight * oil.get_key(key);
-        }
-    }
-
-    for(auto key : retval.keys()) {
-        retval[key] /= total_weight;
+        retval[key] = calculate_property(db, ingredients, key);
     }
 
     return retval;
+}
+
+double SoapProperties::calculate_property(OilDatabase &db, QList<const SoapIngredient> *ingredients, QString property) {
+    double ret = 0;
+    double total_weight = 0;
+    for(auto it = ingredients->constBegin(); it < ingredients->constEnd(); it++) {
+        Oil oil = db.get_oil(it->get_name());
+        total_weight += it->get_weight();
+        ret += it->get_weight() * oil.get_key(property);
+    }
+    return ret / total_weight;
 }
