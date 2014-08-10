@@ -5,9 +5,10 @@
 #include <QDebug>
 #include "oildatabase.h"
 
-OilDatabase::OilDatabase(const QString &file)
- : db(QSqlDatabase::addDatabase("QSQLITE"))
-{
+QHash<QString,Oil> OilDatabase::oils;
+
+void OilDatabase::load_database(const QString &file) {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(file);
     db.open();
 

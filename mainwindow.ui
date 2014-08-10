@@ -47,6 +47,9 @@
                <property name="maximum">
                 <double>50000.000000000000000</double>
                </property>
+               <property name="value">
+                <double>500.000000000000000</double>
+               </property>
               </widget>
              </item>
              <item>
@@ -74,17 +77,20 @@
              <item>
               <widget class="QLabel" name="water_amount_label">
                <property name="text">
-                <string>Percentage</string>
+                <string>Water : Lye ratio</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QDoubleSpinBox" name="water_percentage">
                <property name="suffix">
-                <string>%</string>
+                <string/>
                </property>
                <property name="maximum">
                 <double>99.900000000000006</double>
+               </property>
+               <property name="value">
+                <double>2.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -124,6 +130,9 @@
           </item>
           <item>
            <widget class="QGroupBox" name="fragrance_groupbox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -318,7 +327,55 @@
        </layout>
       </item>
       <item>
-       <widget class="QTableView" name="ingredient_table"/>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="water_amount">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Water amount</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Lye amount</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lye_amount">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableView" name="ingredient_table"/>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -384,6 +441,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_Save"/>
+   <addaction name="action_Load"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Save">
@@ -412,7 +471,7 @@
      <bool>true</bool>
     </property>
     <property name="checked">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="text">
      <string>As &amp;percentage of oils</string>
@@ -428,6 +487,9 @@
    </action>
    <action name="actionWater_lye_ratio">
     <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
      <bool>true</bool>
     </property>
     <property name="text">

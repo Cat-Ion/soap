@@ -8,8 +8,8 @@
 class SoapProperties
 {
 public:
-    static QHash<QString,double> calculate(OilDatabase &db, QList<const SoapIngredient> *ingredients);
-    static double calculate_property(OilDatabase &db, QList<const SoapIngredient> *ingredients, QString property);
+    static QHash<QString,double> calculate(QList<const SoapIngredient> *ingredients);
+    static double calculate_property(QList<const SoapIngredient> *ingredients, QString property);
 };
 
 #endif // SOAPPROPERTIES_H

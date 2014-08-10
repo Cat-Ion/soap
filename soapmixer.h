@@ -11,6 +11,8 @@ class SoapMixer : public QAbstractListModel
     Q_OBJECT
 public:
     enum LyeType { NaOH, KOH, KOH_90 };
+    enum WeightUnit { Grams, Pounds, Ounces };
+    enum WaterType { Percentage, Concentration, Ratio };
 
     SoapMixer();
 
@@ -22,29 +24,45 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
+    double calculate_lye_amount() const;
+    double calculate_water_amount() const;
+
     LyeType get_lye_type() const;
     QList<const SoapIngredient> *get_oils() const;
     double get_oil_mass(int index) const;
     double get_oil_mass(const QString &oil) const;
     double get_oil_weight(int index) const;
     double get_oil_weight(const QString &oil) const;
+    double get_super_fat() const;
     double get_total_mass() const;
+    double get_water() const;
+    WaterType get_water_type() const;
+    WeightUnit get_weight_unit() const;
 
+    void set_lye_type(LyeType new_type);
     void set_oil_mass(int index, double new_mass);
     void set_oil_mass(const QString &oil, double new_mass);
     void set_oil_weight(int index, double new_weight);
     void set_oil_weight(const QString &oil, double new_weight);
+    void set_water_type(WaterType new_water_type);
+    void set_weight_unit(WeightUnit new_unit);
+    QString unit_name() const;
 
 public slots:
-    void set_lye_type(LyeType new_type);
     void add_oil(const QString &oil);
     void remove_oil(const QString &oil);
     void remove_oil(int index);
     void remove_oil(QModelIndex index);
+    void set_super_fat(double new_super_fat);
     void set_total_mass(double new_mass);
+    void set_water(double new_water);
 
 signals:
     void mass_changed(double);
+    void lye_amount_changed(double);
+    void lye_amount_changed(QString);
+    void water_amount_changed(double);
+    void water_amount_changed(QString);
 
 private:
     enum ColumnType {
@@ -54,17 +72,23 @@ private:
         Number = 3
     };
 
-    // Contains oil:weight pairs.
     QHash<QString,int> oil_to_index;
     QList<SoapIngredient> oils;
+
     LyeType lye_type;
+    WeightUnit weight_unit;
+    WaterType water_type;
 
     double mass;
+    double super_fat;
+    double water;
     double weight_sum;
 
+    void emit_signals();
     void recalculate_indices();
     void recalculate_masses();
     void recalculate_weight_sum();
+    double sap_multiplier() const;
 };
 
 #endif // SOAPMIXER_H

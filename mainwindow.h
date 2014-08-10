@@ -32,15 +32,20 @@ public slots:
 private slots:
     void add_list_item_to_soap(QListWidgetItem *);
 
+    void set_soap_lye_type_naoh();
+    void set_soap_lye_type_koh();
+    void set_soap_lye_type_koh_90();
+    void set_soap_water_type_concentration();
+    void set_soap_water_type_percentage();
+    void set_soap_water_type_ratio();
+
 signals:
 
 
 private:
-    enum WeightUnit { Grams, Pounds, Ounces } weight_unit;
     bool sort_increasing;
 
     Ui::MainWindow *ui;
-    OilDatabase oils;
     QHash<QString,QList<QLineEdit*> > oil_key_fields;
     SoapMixer soap;
 

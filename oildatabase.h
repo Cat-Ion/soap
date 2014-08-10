@@ -9,14 +9,12 @@
 class OilDatabase
 {
 public:
-    OilDatabase(const QString &file);
-
-    Oil get_oil(const QString &name);
-    QList<Oil> get_oils();
-    QList<Oil> get_sorted_oils(const QString &key, bool ascending);
+    static void load_database(const QString &file);
+    static Oil get_oil(const QString &name);
+    static QList<Oil> get_oils();
+    static QList<Oil> get_sorted_oils(const QString &key, bool ascending);
 private:
-    QSqlDatabase db;
-    QHash<QString,Oil> oils;
+    static QHash<QString,Oil> oils;
 };
 
 #endif // OILDATABASE_H

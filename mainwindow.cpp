@@ -9,12 +9,16 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    weight_unit(Grams),
     sort_increasing(true),
-    ui(new Ui::MainWindow),
-    oils("oils.sqlite")
+    ui(new Ui::MainWindow)
 {
+    OilDatabase::load_database("oils.sqlite");
     ui->setupUi(this);
+
+    QList<QToolBar *> toolbars = findChildren<QToolBar *>();
+    for(QToolBar *toolbar : toolbars) {
+        toolbar->hide();
+    }
 
     ui->sort_by_property->addItems(Oil::keys);
 
@@ -64,12 +68,38 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ingredient_table->setModel(&soap);
     ui->ingredient_table->setFixedWidth(400);
     ui->ingredient_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->ingredient_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->ingredient_table->verticalHeader()->hide();
     ui->ingredient_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->ingredient_table->setColumnWidth(0, 280);
+    ui->ingredient_table->setColumnWidth(0, 264);
     ui->ingredient_table->setColumnWidth(1, 60);
     ui->ingredient_table->setColumnWidth(2, 60);
     ui->ingredient_table->installEventFilter(this);
+
+    connect(ui->actionAs_percentage_of_oils, SIGNAL(triggered()),
+            this, SLOT(set_soap_water_type_percentage()));
+    connect(ui->actionWater_lye_ratio, SIGNAL(triggered()),
+            this, SLOT(set_soap_water_type_ratio()));
+    connect(ui->action_Lye_concentration, SIGNAL(triggered()),
+            this, SLOT(set_soap_water_type_concentration()));
+
+    connect(ui->action_NaOH, SIGNAL(triggered()),
+            this, SLOT(set_soap_lye_type_naoh()));
+    connect(ui->action_KOH, SIGNAL(triggered()),
+            this, SLOT(set_soap_lye_type_koh()));
+    connect(ui->actionKOH_90, SIGNAL(triggered()),
+            this, SLOT(set_soap_lye_type_koh_90()));
+
+    connect(ui->super_fat, SIGNAL(valueChanged(double)),
+            &soap, SLOT(set_super_fat(double)));
+
+    connect(&soap, SIGNAL(lye_amount_changed(QString)),
+            ui->lye_amount, SLOT(setText(QString)));
+    connect(&soap, SIGNAL(water_amount_changed(QString)),
+            ui->water_amount, SLOT(setText(QString)));
+
+    connect(ui->water_percentage, SIGNAL(valueChanged(double)),
+            &soap, SLOT(set_water(double)));
 
     connect(ui->oil_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(add_list_item_to_soap(QListWidgetItem*)));
@@ -80,6 +110,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&soap, SIGNAL(mass_changed(double)),
             ui->weight_grams, SLOT(setValue(double)));
     connect(&soap, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+            this, SLOT(refresh_soap()));
+    connect(ui->oil_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(refresh_soap()));
 
     connect(ui->ingredient_table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
@@ -99,12 +131,11 @@ void MainWindow::toggle_sort_order() {
     } else {
         ui->sort_order_incdec_button->setText(tr("decreasing"));
     }
-    qDebug() << "1" << oils.get_oils().size();
     sort_oils_by(ui->sort_by_property->currentText());
 }
 
 void MainWindow::sort_oils_by(const QString &key) {
-    QList<Oil> sorted_oils = oils.get_sorted_oils(key, sort_increasing);
+    QList<Oil> sorted_oils = OilDatabase::get_sorted_oils(key, sort_increasing);
 
     QListWidgetItem *current = ui->oil_list->currentItem();
     QString current_oil;
@@ -131,7 +162,7 @@ void MainWindow::show_current_oil_properties(const QString &oil_name) {
             oil_key_fields[key][0]->setText("");
         }
     } else {
-        Oil oil = oils.get_oil(oil_name);
+        Oil oil = OilDatabase::get_oil(oil_name);
 
         for(auto key: Oil::keys) {
             if(key == tr("Name")) continue;
@@ -153,7 +184,7 @@ void MainWindow::add_list_item_to_soap(QListWidgetItem *i) {
 }
 
 void MainWindow::refresh_soap() {
-    QHash<QString,double> properties = SoapProperties::calculate(oils, soap.get_oils());
+    QHash<QString,double> properties = SoapProperties::calculate(soap.get_oils());
     for(auto key : properties.keys()) {
         oil_key_fields[key][1]->setText(QString::number(properties[key], 'g', 3));
     }
@@ -170,4 +201,23 @@ bool MainWindow::eventFilter(QObject *o, QEvent *e) {
         }
     }
     return QObject::eventFilter(o, e);
+}
+
+void MainWindow::set_soap_lye_type_koh() { soap.set_lye_type(soap.KOH); }
+void MainWindow::set_soap_lye_type_koh_90() { soap.set_lye_type(soap.KOH_90); }
+void MainWindow::set_soap_lye_type_naoh() { soap.set_lye_type(soap.NaOH); }
+void MainWindow::set_soap_water_type_concentration() {
+    ui->water_amount_label->setText(tr("Lye concentration"));
+    ui->water_percentage->setSuffix(tr("%"));
+    soap.set_water_type(soap.Concentration);
+}
+void MainWindow::set_soap_water_type_percentage() {
+    ui->water_amount_label->setText(tr("Percentage of oil weight"));
+    ui->water_percentage->setSuffix(tr("%"));
+    soap.set_water_type(soap.Percentage);
+}
+void MainWindow::set_soap_water_type_ratio() {
+    ui->water_amount_label->setText(tr("Water : Lye ratio"));
+    ui->water_percentage->setSuffix(tr(""));
+    soap.set_water_type(soap.Ratio);
 }

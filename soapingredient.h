@@ -1,12 +1,14 @@
 #ifndef SOAPINGREDIENT_H
 #define SOAPINGREDIENT_H
 #include <QString>
+#include "oil.h"
 
 class SoapIngredient
 {
 public:
-    SoapIngredient(QString name, double weight, double mass);
+    SoapIngredient(const QString &name, double weight, double mass);
 
+    Oil get_oil() const;
     QString get_name() const;
 
     double get_mass() const;
