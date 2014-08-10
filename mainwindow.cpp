@@ -33,9 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
         oil_key_fields.insert(quality, list);
 
-        ((QGridLayout*)(ui->qualities_groupbox->layout()))->addWidget(new QLabel(quality), 1 + index, 0);
-        ((QGridLayout*)(ui->qualities_groupbox->layout()))->addWidget(one, 1 + index, 1);
-        ((QGridLayout*)(ui->qualities_groupbox->layout()))->addWidget(all, 1 + index, 2);
+        ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(new QLabel(quality), 1 + index, 0);
+        ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(one, 1 + index, 1);
+        ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(all, 1 + index, 2);
 
     }
 
@@ -53,9 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
         oil_key_fields.insert(fatty_acid, list);
 
-        ((QGridLayout*)(ui->acids_groupbox->layout()))->addWidget(new QLabel(fatty_acid), 1 + index, 0);
-        ((QGridLayout*)(ui->acids_groupbox->layout()))->addWidget(one, 1 + index, 1);
-        ((QGridLayout*)(ui->acids_groupbox->layout()))->addWidget(all, 1 + index, 2);
+        ((QGridLayout*)(ui->tab_fatty_acids->layout()))->addWidget(new QLabel(fatty_acid), 1 + index, 0);
+        ((QGridLayout*)(ui->tab_fatty_acids->layout()))->addWidget(one, 1 + index, 1);
+        ((QGridLayout*)(ui->tab_fatty_acids->layout()))->addWidget(all, 1 + index, 2);
     }
 
     sort_oils_by(tr("Name"));

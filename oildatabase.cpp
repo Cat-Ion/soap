@@ -12,7 +12,7 @@ OilDatabase::OilDatabase(const QString &file)
     db.open();
 
     QSqlQuery query(db);
-    if(!query.exec("SELECT name, hardness, cleansing, condition, bubbly, creamy, iodine, ins, lauric, myristic, palmitic, stearic, ricinoleic, oleic, linoleic, linolenic FROM \"oils\" ORDER BY name;")) {
+    if(!query.exec("SELECT name, hardness, cleansing, condition, bubbly, creamy, iodine, sap, ins, lauric, myristic, palmitic, stearic, ricinoleic, oleic, linoleic, linolenic FROM \"oils\" ORDER BY name;")) {
         qDebug() << query.lastError().text();
     }
 
@@ -33,7 +33,8 @@ OilDatabase::OilDatabase(const QString &file)
                         query.value(12).toDouble(),
                         query.value(13).toDouble(),
                         query.value(14).toDouble(),
-                        query.value(15).toDouble()
+                        query.value(15).toDouble(),
+                        query.value(16).toDouble()
                         ));
     }
 

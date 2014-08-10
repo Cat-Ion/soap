@@ -16,6 +16,7 @@ public:
         double bubbly,
         double creamy,
         double iodine,
+        double sap,
         double ins,
         double lauric,
         double myristic,
@@ -34,6 +35,7 @@ public:
     double get_bubbly() const;
     double get_creamy() const;
     double get_iodine() const;
+    double get_sap() const;
     double get_ins() const;
     double get_lauric() const;
     double get_myristic() const;
@@ -52,7 +54,7 @@ private:
     static void init_statics();
 
     QString name;
-    double hardness, cleansing, condition, bubbly, creamy, iodine, ins;
+    double hardness, cleansing, condition, bubbly, creamy, iodine, sap, ins;
     double lauric, myristic, palmitic, stearic, ricinoleic, oleic, linoleic, linolenic;
 
     double get_zero() const;

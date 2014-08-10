@@ -10,6 +10,7 @@ QHash<QString,Oil::Getter> init_ntg() {
     ntg.insert(QObject::tr("Bubbly"), &Oil::get_bubbly);
     ntg.insert(QObject::tr("Creamy"), &Oil::get_creamy);
     ntg.insert(QObject::tr("Iodine"), &Oil::get_iodine);
+    ntg.insert(QObject::tr("SAP"), &Oil::get_sap);
     ntg.insert(QObject::tr("INS"), &Oil::get_ins);
     ntg.insert(QObject::tr("Lauric"), &Oil::get_lauric);
     ntg.insert(QObject::tr("Myristic"), &Oil::get_myristic);
@@ -55,6 +56,7 @@ QList<QString> init_qualities() {
     l.append(QObject::tr("Bubbly"));
     l.append(QObject::tr("Creamy"));
     l.append(QObject::tr("Iodine"));
+    l.append(QObject::tr("SAP"));
     l.append(QObject::tr("INS"));
 
     return l;
@@ -73,6 +75,7 @@ Oil::Oil(QString name,
          double bubbly,
          double creamy,
          double iodine,
+         double sap,
          double ins,
          double lauric,
          double myristic,
@@ -89,6 +92,7 @@ Oil::Oil(QString name,
       bubbly(bubbly),
       creamy(creamy),
       iodine(iodine),
+      sap(sap),
       ins(ins),
       lauric(lauric),
       myristic(myristic),
@@ -114,6 +118,7 @@ double Oil::get_condition() const { return condition; }
 double Oil::get_bubbly() const { return bubbly; }
 double Oil::get_creamy() const { return creamy; }
 double Oil::get_iodine() const { return iodine; }
+double Oil::get_sap() const { return sap; }
 double Oil::get_ins() const { return ins; }
 double Oil::get_lauric() const { return lauric; }
 double Oil::get_myristic() const { return myristic; }
