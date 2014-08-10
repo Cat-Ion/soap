@@ -105,7 +105,7 @@ double SoapMixer::calculate_water_amount() const {
     case Ratio:
         return calculate_lye_amount() * water;
     case Concentration:
-        return calculate_lye_amount() / water * 100;
+        return calculate_lye_amount() * (100 - water) / water;
     default:
         return 0;
     }
