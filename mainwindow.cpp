@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->ingredient_table->setModel(&soap);
     ui->ingredient_table->setFixedWidth(400);
+    ui->ingredient_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->ingredient_table->verticalHeader()->hide();
     ui->ingredient_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->ingredient_table->setColumnWidth(0, 280);
