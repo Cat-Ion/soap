@@ -39,6 +39,8 @@ public slots:
     void set_lye_type(LyeType new_type);
     void add_oil(const QString &oil);
     void remove_oil(const QString &oil);
+    void remove_oil(int index);
+    void remove_oil(QModelIndex index);
     void set_total_mass(double new_mass);
 
 signals:

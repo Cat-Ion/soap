@@ -113,14 +113,24 @@ void SoapMixer::add_oil(const QString &oil) {
     }
 }
 
+void SoapMixer::remove_oil(int index) {
+    beginRemoveRows(QModelIndex(), index, index);
+    oils.removeAt(index);
+
+    recalculate_weight_sum();
+    recalculate_indices();
+    endRemoveRows();
+}
+
+void SoapMixer::remove_oil(QModelIndex index) {
+    if(index.isValid() && index.row() >= 0 && index.row() < oils.size()) {
+        remove_oil(index.row());
+    }
+}
+
 void SoapMixer::remove_oil(const QString &oil) {
     if(oil_to_index.contains(oil)) {
-        beginRemoveRows(QModelIndex(), oil_to_index[oil], oil_to_index[oil]);
-        oils.removeAt(oil_to_index[oil]);
-
-        recalculate_weight_sum();
-        recalculate_indices();
-        endRemoveRows();
+        remove_oil(oil_to_index[oil]);
     }
 }
 

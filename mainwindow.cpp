@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->ingredient_table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(show_current_oil_properties_from_ingredients(QModelIndex)));
+    connect(ui->ingredient_table, SIGNAL(doubleClicked(QModelIndex)),
+            &soap, SLOT(remove_oil(QModelIndex)));
 
 }
 
@@ -137,6 +139,10 @@ void MainWindow::show_current_oil_properties(const QString &oil_name) {
 }
 
 void MainWindow::show_current_oil_properties_from_ingredients(QModelIndex index) {
+    if(soap.get_oils()->size() == 0 ||
+       !index.isValid()) {
+        return;
+    }
     show_current_oil_properties(soap.get_oils()->at(index.row()).get_name());
 }
 
