@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>792</width>
+    <width>967</width>
     <height>624</height>
    </rect>
   </property>
@@ -200,7 +200,20 @@
              </layout>
             </item>
             <item>
-             <widget class="QListWidget" name="oil_list"/>
+             <widget class="QListWidget" name="oil_list">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>350</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -320,7 +333,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>792</width>
+     <width>967</width>
      <height>19</height>
     </rect>
    </property>
