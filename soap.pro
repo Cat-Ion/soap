@@ -16,7 +16,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    oilwidget.cpp \
     oildatabase.cpp \
     oil.cpp \
     soapmixer.cpp \
@@ -24,14 +23,12 @@ SOURCES += main.cpp\
     soapproperties.cpp
 
 HEADERS  += mainwindow.h \
-    oilwidget.h \
     oildatabase.h \
     oil.h \
     soapmixer.h \
     soapingredient.h \
     soapproperties.h
 
-FORMS    += mainwindow.ui \
-    oilwidget.ui
+FORMS    += mainwindow.ui
 
 OTHER_FILES +=
