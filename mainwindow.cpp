@@ -132,6 +132,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::open_load_dialog() {
     soap.load_from_file(QFileDialog::getOpenFileName(0, "Select soap file to open", QString(), tr("Soap files (*.soap);;Any file (*.*)")));
+
+    ui->super_fat->setValue(soap.get_super_fat());
+    ui->water_percentage->setValue(soap.get_water());
+
+    switch(soap.get_lye_type()) {
+    case soap.NaOH: set_soap_lye_type_naoh(); break;
+    case soap.KOH:  set_soap_lye_type_koh(); break;
+    case soap.KOH_90: set_soap_lye_type_koh_90(); break;
+    }
+
+    switch(soap.get_water_type()) {
+    case soap.Percentage: set_soap_water_type_percentage(); break;
+    case soap.Ratio: set_soap_water_type_ratio(); break;
+    case soap.Concentration: set_soap_water_type_concentration(); break;
+    }
+
+    switch(soap.get_weight_unit()) {
+    // TODO
+    }
 }
 
 void MainWindow::open_save_dialog() {
