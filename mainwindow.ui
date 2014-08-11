@@ -429,7 +429,6 @@
     <addaction name="menu_Lye_type"/>
     <addaction name="menu_Unit"/>
     <addaction name="menu_Water"/>
-    <addaction name="action_Super_Fat"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Options"/>
