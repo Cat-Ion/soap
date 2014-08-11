@@ -135,7 +135,11 @@ void MainWindow::open_load_dialog() {
 }
 
 void MainWindow::open_save_dialog() {
-    soap.save_to_file(QFileDialog::getSaveFileName(0, "Select soap file to write", QString(), tr("Soap files (*.soap);;Any file (*.*)")));
+    QString filename = QFileDialog::getSaveFileName(0, "Select soap file to write", QString(), tr("Soap files (*.soap);;Any file (*.*)"));
+    if(!filename.contains('.')) {
+        filename.append(QString(".soap"));
+    }
+    soap.save_to_file(filename);
 }
 
 void MainWindow::toggle_sort_order() {
