@@ -189,7 +189,11 @@ void SoapMixer::set_oil_mass(int index, double new_mass) {
         weight_sum -= oils[index].get_weight();
 
         oils[index].set_mass(new_mass);
-        oils[index].set_weight(new_mass/mass * weight_sum);
+        if(weight_sum == 0 && new_mass != 0) {
+            oils[index].set_weight(1);
+        } else {
+            oils[index].set_weight(new_mass/mass * weight_sum);
+        }
 
         weight_sum += new_mass/mass * weight_sum;
         mass += new_mass;
@@ -284,9 +288,9 @@ void SoapMixer::emit_signals() {
     double lye_amount = calculate_lye_amount();
     double water_amount = calculate_water_amount();
     emit lye_amount_changed(lye_amount);
-    emit lye_amount_changed(QString("%1 %2").arg(lye_amount, 0, 'g', 3).arg(unit_name()));
+    emit lye_amount_changed(QString("%1 %2").arg(lye_amount, 0, 'g', 3).arg(unit_name_short()));
     emit water_amount_changed(water_amount);
-    emit water_amount_changed(QString("%1 %2").arg(water_amount, 0, 'g', 3).arg(unit_name()));
+    emit water_amount_changed(QString("%1 %2").arg(water_amount, 0, 'g', 3).arg(unit_name_short()));
 }
 
 void SoapMixer::recalculate_indices() {
@@ -412,7 +416,23 @@ bool SoapMixer::load_from_file(QString filename) {
     return true;
 }
 
-QString SoapMixer::unit_name() const {
+QString SoapMixer::unit_name_long(bool uppercase) const {
+    QString ret;
+    switch(weight_unit) {
+    case Grams: ret = tr("grams"); break;
+    case Pounds: ret = tr("pounds"); break;
+    case Ounces: ret = tr("ounces"); break;
+    default: return tr("");
+    }
+
+    if(uppercase) {
+        ret[0] = ret[0].toUpper();
+    }
+
+    return ret;
+}
+
+QString SoapMixer::unit_name_short() const {
     switch(weight_unit) {
     case Grams: return tr("g");
     case Pounds: return tr("lb");

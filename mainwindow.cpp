@@ -77,6 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ingredient_table->setColumnWidth(2, 60);
     ui->ingredient_table->installEventFilter(this);
 
+    connect(ui->action_Exit, SIGNAL(triggered()),
+            this, SLOT(close()));
+
     connect(ui->action_Save, SIGNAL(triggered()),
             this, SLOT(open_save_dialog()));
     connect(ui->action_Load, SIGNAL(triggered()),
@@ -257,4 +260,16 @@ void MainWindow::set_soap_water_type_ratio() {
     ui->water_amount_label->setText(tr("Water : Lye ratio"));
     ui->water_percentage->setSuffix(tr(""));
     soap.set_water_type(soap.Ratio);
+}
+void MainWindow::set_soap_weight_unit_grams() {
+    soap.set_weight_unit(soap.Grams);
+    ui->weight_unit_label->setText(soap.unit_name_long(true));
+}
+void MainWindow::set_soap_weight_unit_pounds() {
+    soap.set_weight_unit(soap.Pounds);
+    ui->weight_unit_label->setText(soap.unit_name_long(true));
+}
+void MainWindow::set_soap_weight_unit_ounces() {
+    soap.set_weight_unit(soap.Ounces);
+    ui->weight_unit_label->setText(soap.unit_name_long(true));
 }

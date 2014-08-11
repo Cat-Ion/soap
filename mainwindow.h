@@ -40,6 +40,10 @@ private slots:
     void set_soap_water_type_concentration();
     void set_soap_water_type_percentage();
     void set_soap_water_type_ratio();
+    void set_soap_weight_unit_grams();
+    void set_soap_weight_unit_pounds();
+    void set_soap_weight_unit_ounces();
+
 
 signals:
 

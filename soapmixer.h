@@ -46,7 +46,8 @@ public:
     void set_oil_weight(const QString &oil, double new_weight);
     void set_water_type(WaterType new_water_type);
     void set_weight_unit(WeightUnit new_unit);
-    QString unit_name() const;
+    QString unit_name_long(bool uppercase = false) const;
+    QString unit_name_short() const;
 
     void save_to_file(QString filename) const;
     bool load_from_file(QString filename);
