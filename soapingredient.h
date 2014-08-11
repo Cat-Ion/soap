@@ -1,5 +1,6 @@
 #ifndef SOAPINGREDIENT_H
 #define SOAPINGREDIENT_H
+#include <QJsonObject>
 #include <QString>
 #include "oil.h"
 
@@ -16,6 +17,10 @@ public:
 
     void set_mass(double new_mass);
     void set_weight(double new_weight);
+
+    QJsonObject to_json() const;
+
+    static SoapIngredient from_json(const QJsonObject &obj);
 
 private:
     QString name;

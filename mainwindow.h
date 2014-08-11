@@ -23,6 +23,8 @@ public:
     ~MainWindow();
 
 public slots:
+    void open_load_dialog();
+    void open_save_dialog();
     void refresh_soap();
     void show_current_oil_properties(const QString &oil);
     void show_current_oil_properties_from_ingredients(QModelIndex);

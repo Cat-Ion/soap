@@ -33,3 +33,16 @@ double SoapIngredient::get_mass() const {
 double SoapIngredient::get_weight() const {
     return weight;
 }
+
+QJsonObject SoapIngredient::to_json() const {
+    QJsonObject ret;
+
+    ret["oil"] = get_name();
+    ret["weight"] = get_weight();
+
+    return ret;
+}
+
+SoapIngredient SoapIngredient::from_json(const QJsonObject &obj) {
+    return SoapIngredient(obj["oil"].toString(), obj["weight"].toDouble(), 0);
+}

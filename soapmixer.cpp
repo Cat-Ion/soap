@@ -1,6 +1,11 @@
 #include "soapmixer.h"
 #include "soapproperties.h"
 #include <QDebug>
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QErrorMessage>
 
 SoapMixer::SoapMixer()
     : QAbstractListModel(),
@@ -321,6 +326,89 @@ double SoapMixer::sap_multiplier() const {
     default:
         return 0;
     }
+}
+
+void SoapMixer::save_to_file(QString filename) const {
+    QJsonObject data;
+    QFile file(filename);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QErrorMessage().showMessage(QString("Couldn't open file for writing: %1").arg(file.errorString()));
+        return;
+    }
+
+    if(filename == tr("")) return;
+
+    data["lye_type"] = (int)(lye_type);
+    data["weight_unit"] = (int)(weight_unit);
+    data["water_type"] = (int)(water_type);
+    data["water_amount"] = water;
+    data["mass"] = mass;
+    data["super_fat"] = super_fat;
+
+    QJsonArray needed_oils, ingredients;
+
+    for(auto ingredient : oils) {
+        needed_oils.append(OilDatabase::oil_to_json(ingredient.get_name()));
+        ingredients.append(ingredient.to_json());
+    }
+
+    data["needed_oils"] = needed_oils;
+    data["ingredients"] = ingredients;
+
+    file.write(QJsonDocument(data).toJson());
+}
+
+bool SoapMixer::load_from_file(QString filename) {
+    QFile file(filename);
+    if(!file.open(QIODevice::ReadOnly)) {
+        QErrorMessage().showMessage(QString("Couldn't open file for reading: %1").arg(file.errorString()));
+        return false;
+    }
+
+    QByteArray load_data = file.readAll();
+    QJsonDocument json_data = QJsonDocument::fromJson(load_data);
+    QJsonObject data = json_data.object();
+
+    if(data["lye_type"].isUndefined() ||
+            data["weight_unit"].isUndefined() ||
+            data["water_type"].isUndefined() ||
+            data["water_amount"].isUndefined() ||
+            data["mass"].isUndefined() ||
+            data["super_fat"].isUndefined() ||
+            data["needed_oils"].isUndefined() ||
+            data["ingredients"].isUndefined()) {
+        QErrorMessage().showMessage(QString("Invalid data"));
+        return false;
+    }
+
+    beginRemoveRows(QModelIndex(), 0, oils.size()-1);
+    oils.clear();
+    endRemoveRows();
+
+    QJsonArray needed_oils = data["needed_oils"].toArray();
+    for(int i = 0; i < needed_oils.size(); i++) {
+        OilDatabase::add_oil(needed_oils.at(i).toObject());
+    }
+
+    QJsonArray ingredients = data["ingredients"].toArray();
+    beginInsertRows(QModelIndex(), 0, ingredients.size()-1);
+    for(int i = 0; i < ingredients.size(); i++) {
+        oils.append(SoapIngredient::from_json(ingredients.at(i).toObject()));
+    }
+    endInsertRows();
+
+    lye_type = (LyeType) data["lye_type"].toInt();
+    weight_unit = (WeightUnit) data["weight_unit"].toInt();
+    water_type = (WaterType) data["water_type"].toInt();
+    water = data["water_amount"].toDouble();
+    mass = data["mass"].toDouble();
+    super_fat = data["super_fat"].toDouble();
+
+    recalculate_indices();
+    recalculate_weight_sum();
+    recalculate_masses();
+
+    return true;
 }
 
 QString SoapMixer::unit_name() const {

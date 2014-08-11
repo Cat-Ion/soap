@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -76,6 +77,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ingredient_table->setColumnWidth(2, 60);
     ui->ingredient_table->installEventFilter(this);
 
+    connect(ui->action_Save, SIGNAL(triggered()),
+            this, SLOT(open_save_dialog()));
+    connect(ui->action_Load, SIGNAL(triggered()),
+            this, SLOT(open_load_dialog()));
+
     connect(ui->actionAs_percentage_of_oils, SIGNAL(triggered()),
             this, SLOT(set_soap_water_type_percentage()));
     connect(ui->actionWater_lye_ratio, SIGNAL(triggered()),
@@ -122,6 +128,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::open_load_dialog() {
+    soap.load_from_file(QFileDialog::getOpenFileName(0, "Select soap file to open", QString(), tr("Soap files (*.soap);;Any file (*.*)")));
+}
+
+void MainWindow::open_save_dialog() {
+    soap.save_to_file(QFileDialog::getSaveFileName(0, "Select soap file to write", QString(), tr("Soap files (*.soap);;Any file (*.*)")));
 }
 
 void MainWindow::toggle_sort_order() {

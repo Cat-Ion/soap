@@ -10,9 +10,9 @@ class SoapMixer : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum LyeType { NaOH, KOH, KOH_90 };
-    enum WeightUnit { Grams, Pounds, Ounces };
-    enum WaterType { Percentage, Concentration, Ratio };
+    enum LyeType { NaOH = 0, KOH = 1, KOH_90 = 2 };
+    enum WeightUnit { Grams = 0, Pounds = 1, Ounces = 2 };
+    enum WaterType { Percentage = 0, Concentration = 1, Ratio = 2 };
 
     SoapMixer();
 
@@ -47,6 +47,9 @@ public:
     void set_water_type(WaterType new_water_type);
     void set_weight_unit(WeightUnit new_unit);
     QString unit_name() const;
+
+    void save_to_file(QString filename) const;
+    bool load_from_file(QString filename);
 
 public slots:
     void add_oil(const QString &oil);
