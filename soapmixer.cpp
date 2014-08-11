@@ -407,6 +407,7 @@ bool SoapMixer::load_from_file(QString filename) {
     recalculate_indices();
     recalculate_weight_sum();
     recalculate_masses();
+    emit mass_changed(mass);
 
     return true;
 }
