@@ -152,7 +152,9 @@ void MainWindow::open_load_dialog() {
     }
 
     switch(soap.get_weight_unit()) {
-    // TODO
+    case soap.Grams: set_soap_weight_unit_grams(); break;
+    case soap.Pounds: set_soap_weight_unit_pounds(); break;
+    case soap.Ounces: set_soap_weight_unit_ounces(); break;
     }
 }
 
