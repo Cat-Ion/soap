@@ -39,10 +39,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
         oil_key_fields.insert(quality, list);
 
-        ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(new QLabel(quality), 1 + index, 0);
+        QLabel *label = new QLabel(quality);
+        if(soap.property_has_range(quality)) {
+            label->setToolTip(QString("Optimal range: %1 to %2").arg(soap.get_property_min(quality)).arg(soap.get_property_max(quality)));
+        }
+
+        ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(label, 1 + index, 0);
         ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(one, 1 + index, 1);
         ((QGridLayout*)(ui->tab_properties->layout()))->addWidget(all, 1 + index, 2);
-
     }
 
     for(auto fatty_acid : Oil::fatty_acids) {
@@ -209,6 +213,14 @@ void MainWindow::show_current_oil_properties(const QString &oil_name) {
         for(auto key: Oil::keys) {
             if(key == tr("Name")) continue;
             oil_key_fields[key][0]->setText(QString::number(oil.get_key(key), 'g', 3));
+
+            if(soap.oil_is_good_for_property(oil, key)) {
+                oil_key_fields[key][0]->setStyleSheet("background-color: green");
+            } else if(soap.oil_is_bad_for_property(oil, key)) {
+                oil_key_fields[key][0]->setStyleSheet("background-color: red");
+            } else {
+                oil_key_fields[key][0]->setStyleSheet("");
+            }
         }
     }
 }
@@ -229,6 +241,16 @@ void MainWindow::refresh_soap() {
     QHash<QString,double> properties = SoapProperties::calculate(soap.get_oils());
     for(auto key : properties.keys()) {
         oil_key_fields[key][1]->setText(QString::number(properties[key], 'g', 3));
+
+        if(!soap.property_is_good(key)) {
+            if(soap.property_is_high(key)) {
+                oil_key_fields[key][1]->setStyleSheet("background-color: red");
+            } else {
+                oil_key_fields[key][1]->setStyleSheet("background-color: rgb(128,128,255)");
+            }
+        } else {
+            oil_key_fields[key][1]->setStyleSheet("");
+        }
     }
 }
 

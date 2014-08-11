@@ -7,6 +7,35 @@
 #include <QJsonObject>
 #include <QErrorMessage>
 
+QHash<QString,double> init_range_min() {
+    QHash<QString,double> ret;
+    ret["Hardness"] = 29;
+    ret["Cleansing"] = 12;
+    ret["Condition"] = 44;
+    ret["Bubbly"] = 14;
+    ret["Creamy"] = 16;
+    ret["Iodine"] = 22;
+    ret["INS"] = 136;
+
+    return ret;
+}
+
+QHash<QString,double> init_range_max() {
+    QHash<QString,double> ret;
+    ret["Hardness"] = 54;
+    ret["Cleansing"] = 22;
+    ret["Condition"] = 69;
+    ret["Bubbly"] = 46;
+    ret["Creamy"] = 48;
+    ret["Iodine"] = 70;
+    ret["INS"] = 165;
+
+    return ret;
+}
+
+QHash<QString,double> SoapMixer::property_min = init_range_min();
+QHash<QString,double> SoapMixer::property_max = init_range_max();
+
 SoapMixer::SoapMixer()
     : QAbstractListModel(),
       oils(),
@@ -439,4 +468,78 @@ QString SoapMixer::unit_name_short() const {
     case Ounces: return tr("oz");
     default: return tr("");
     }
+}
+
+bool SoapMixer::property_has_range(const QString key) {
+    return property_min.contains(key);
+}
+
+double SoapMixer::get_property_min(const QString key) {
+    return property_min.value(key, 0);
+}
+
+double SoapMixer::get_property_max(const QString key) {
+    return property_max.value(key, 0);
+}
+
+bool SoapMixer::property_is_good(const QString key) const {
+    double property = SoapProperties::calculate_property(get_oils(), key);
+    if(property_has_range(key) && (get_property_min(key) > property || get_property_max(key) < property)) {
+        return false;
+    }
+    return true;
+}
+
+bool SoapMixer::property_is_high(const QString key) const {
+    double property = SoapProperties::calculate_property(get_oils(), key);
+    if(property_has_range(key) && get_property_max(key) < property) {
+        return true;
+    }
+    return false;
+}
+
+bool SoapMixer::property_is_low(const QString key) const {
+    double property = SoapProperties::calculate_property(get_oils(), key);
+    if(property_has_range(key) && get_property_min(key) > property) {
+        return true;
+    }
+    return false;
+}
+
+bool SoapMixer::oil_is_bad_for_property(const Oil &oil, const QString key) const {
+    if(!property_has_range(key)) {
+        return false;
+    }
+
+    double min = get_property_min(key);
+    double max = get_property_max(key);
+    double property = SoapProperties::calculate_property(get_oils(), key);
+
+    if(property < min && oil.get_key(key) < min) {
+        return true;
+    }
+    if(property > max && oil.get_key(key) > max) {
+        return true;
+    }
+
+    return false;
+}
+
+bool SoapMixer::oil_is_good_for_property(const Oil &oil, const QString key) const {
+    if(!property_has_range(key)) {
+        return false;
+    }
+
+    double min = get_property_min(key);
+    double max = get_property_max(key);
+    double property = SoapProperties::calculate_property(get_oils(), key);
+
+    if(property < min && oil.get_key(key) > min) {
+        return true;
+    }
+    if(property > max && oil.get_key(key) < max) {
+        return true;
+    }
+
+    return false;
 }

@@ -52,6 +52,15 @@ public:
     void save_to_file(QString filename) const;
     bool load_from_file(QString filename);
 
+    static bool property_has_range(const QString key);
+    static double get_property_min(const QString key);
+    static double get_property_max(const QString key);
+    bool property_is_good(const QString key) const;
+    bool property_is_high(const QString key) const;
+    bool property_is_low(const QString key) const;
+    bool oil_is_bad_for_property(const Oil &oil, const QString key) const;
+    bool oil_is_good_for_property(const Oil &oil, const QString key) const;
+
 public slots:
     void add_oil(const QString &oil);
     void remove_oil(const QString &oil);
@@ -75,6 +84,8 @@ private:
         Mass = 2,
         Number = 3
     };
+
+    static QHash<QString,double> property_min, property_max;
 
     QHash<QString,int> oil_to_index;
     QList<SoapIngredient> oils;
