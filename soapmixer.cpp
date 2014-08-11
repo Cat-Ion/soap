@@ -1,5 +1,6 @@
 #include "soapmixer.h"
 #include "soapproperties.h"
+#include <numeric>
 #include <QDebug>
 #include <QFile>
 #include <QJsonArray>

@@ -4,15 +4,18 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+windows: {
+    CONFIG += c++11
+}
 
-QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall
+linux: {
+    QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall
+}
 
 TARGET = soap
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         mainwindow.cpp \
