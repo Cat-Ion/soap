@@ -217,7 +217,7 @@ void MainWindow::show_current_oil_properties(const QString &oil_name) {
             if(soap.oil_is_good_for_property(oil, key)) {
                 oil_key_fields[key][0]->setStyleSheet("background-color: green");
             } else if(soap.oil_is_bad_for_property(oil, key)) {
-                oil_key_fields[key][0]->setStyleSheet("background-color: red");
+                oil_key_fields[key][0]->setStyleSheet("background-color: yellow");
             } else {
                 oil_key_fields[key][0]->setStyleSheet("");
             }
@@ -244,7 +244,7 @@ void MainWindow::refresh_soap() {
 
         if(!soap.property_is_good(key)) {
             if(soap.property_is_high(key)) {
-                oil_key_fields[key][1]->setStyleSheet("background-color: red");
+                oil_key_fields[key][1]->setStyleSheet("background-color: yellow");
             } else {
                 oil_key_fields[key][1]->setStyleSheet("background-color: rgb(128,128,255)");
             }
