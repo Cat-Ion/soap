@@ -6,11 +6,11 @@
 
 QT       += core gui sql widgets
 
-windows: {
+win32: {
     CONFIG += c++11
 }
 
-linux: {
+unix: {
     QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall
 }
 
